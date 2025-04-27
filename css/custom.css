@@ -1,0 +1,19 @@
+/* 基础文字样式 */
+.post-content {
+  word-wrap: break-word;      /* 自动换行 */
+  line-height: 1.8;          /* 行间距 */
+  text-align: justify;       /* 两端对齐 */
+  font-family: 
+    'LXGW WenKai',          /* 霞鹜文楷字体 */
+    'Microsoft YaHei',      /* 微软雅黑 */
+    sans-serif;             /* 备用字体 */
+}
+
+/* 诗歌便签样式 */
+.note.poetry {
+  background: #f8f9fa;
+  border-left: 4px solid #6c757d;
+  padding: 1rem;
+  font-style: italic;
+  color: #495057;
+}
