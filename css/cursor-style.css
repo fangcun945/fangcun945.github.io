@@ -1,0 +1,30 @@
+document.addEventListener('click', function(e) {
+  const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeead'];
+  const effect = document.createElement('div');
+  
+  effect.style.position = 'fixed';
+  effect.style.left = e.pageX + 'px';
+  effect.style.top = e.pageY + 'px';
+  effect.style.width = '10px';
+  effect.style.height = '10px';
+  effect.style.borderRadius = '50%';
+  effect.style.backgroundColor = colors[Math.floor(Math.random()*colors.length)];
+  effect.style.pointerEvents = 'none';
+  effect.style.animation = 'clickEffect 0.5s linear';
+  
+  document.body.appendChild(effect);
+  
+  setTimeout(() => {
+    effect.remove();
+  }, 500);
+});
+
+// 添加CSS动画
+const style = document.createElement('style');
+style.textContent = `
+@keyframes clickEffect {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(3); opacity: 0; }
+}
+`;
+document.head.appendChild(style);
