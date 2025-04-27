@@ -1,8 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
 
-  <link rel="stylesheet" href="/css/cursor-style.css">
+  
 <head>
+<style>
+  #particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* 确保内容在上层 */
+    pointer-events: none; /* 允许点击穿透 */
+  }
+</style>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="keywords" content="" />
@@ -53,6 +64,7 @@
 
 
   <body>
+  <div id="particles-js"></div>
     <div id="app">
       <div class="header">
   <a href="/">我的个人朋友圈</a>
@@ -329,6 +341,7 @@
 
 
     </div>
-	    <script src="/js/cursor-effect.js"></script>  
+	       <script src="/js/particles.min.js"></script>
+	       <script src="/js/particles-config.js"></script>
   </body>
 </html>
