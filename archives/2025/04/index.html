@@ -3,6 +3,18 @@
 
   
 <head>
+
+hexo.extend.filter.register('theme_inject', function (injects) {
+  .
+  .
+  .
+  // 引入 APlayer
+  injects.head.file('aplayer', 'source/_data/APlayer.swig', {aplayer: hexo.theme.config.aplayer});
+  .
+  .
+  .
+});
+
 <style>
   #particles-js {
     position: fixed;
@@ -58,16 +70,7 @@
 <script src="/js/fancybox.js"></script>
 
   
-hexo.extend.filter.register('theme_inject', function (injects) {
-  .
-  .
-  .
-  // 引入 APlayer
-  injects.head.file('aplayer', 'source/_data/APlayer.swig', {aplayer: hexo.theme.config.aplayer});
-  .
-  .
-  .
-});
+
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 
@@ -112,6 +115,17 @@ hexo.extend.filter.register('theme_inject', function (injects) {
           </h2>
         </div>
       
+      <div class="post-item" title="demo2">
+        <div class="time-m-d">04-28</div>
+        <div class="title">
+          <a href="/2025/04/28/demo2/">
+            
+              <span>demo2</span>
+            
+          </a>
+        </div>
+      </div>
+    
       <div class="post-item" title="暮色笔记·五月廿日">
         <div class="time-m-d">04-27</div>
         <div class="title">

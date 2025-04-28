@@ -3,6 +3,18 @@
 
   
 <head>
+
+hexo.extend.filter.register('theme_inject', function (injects) {
+  .
+  .
+  .
+  // 引入 APlayer
+  injects.head.file('aplayer', 'source/_data/APlayer.swig', {aplayer: hexo.theme.config.aplayer});
+  .
+  .
+  .
+});
+
 <style>
   #particles-js {
     position: fixed;
@@ -62,16 +74,7 @@
 <script src="/js/fancybox.js"></script>
 
   
-hexo.extend.filter.register('theme_inject', function (injects) {
-  .
-  .
-  .
-  // 引入 APlayer
-  injects.head.file('aplayer', 'source/_data/APlayer.swig', {aplayer: hexo.theme.config.aplayer});
-  .
-  .
-  .
-});
+
 <meta name="generator" content="Hexo 7.3.0"></head>
 
 
@@ -146,6 +149,8 @@ hexo.extend.filter.register('theme_inject', function (injects) {
   
     
         
+          <a id="newer" class="blog-nav" href="/2025/04/28/demo2/">&lt;&nbsp;NEWER</a>
+          
             
 </div>
         <div class="footer">
