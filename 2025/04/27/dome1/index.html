@@ -162,7 +162,7 @@
   
   
 
- <span id="sitetime" style="display: block; text-align: center; margin: 20px 0; font-size: 1.2em;"></span>
+<span id="sitetime" style="display: block; text-align: center; margin: 20px 0; font-size: 1.2em;"></span>
   
 
   <script language=javascript>
@@ -421,5 +421,71 @@
     </div>
 	       <script src="/js/particles.min.js"></script>
 	       <script src="/js/particles-config.js"></script>
+		   
+		 
+		 
+ <!-- 音乐播放器容器 -->
+<div id="music-player" style="position: fixed; bottom: 20px; right: 20px; z-index: 999; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+		   <audio id="bg-music" loop>
+		     <source src="/music/background.mp3" type="audio/mpeg">
+		   </audio>
+		   <button id="play-pause" style="margin-right:5px;">▶</button>
+		   <input type="range" id="volume" min="0" max="1" step="0.1" value="1" style="width: 80px;">
+		 </div>
+		 
+		 <script>
+		 // 使用localStorage保存播放状态
+		 document.addEventListener('DOMContentLoaded', function() {
+		   const audio = document.getElementById('bg-music');
+		   const playPauseBtn = document.getElementById('play-pause');
+		   const volumeControl = document.getElementById('volume');
+		 
+		   // 恢复播放状态
+		   const isPlaying = localStorage.getItem('musicPlaying') === 'true';
+		   const savedVolume = parseFloat(localStorage.getItem('musicVolume')) || 1;
+		   
+		   audio.volume = savedVolume;
+		   volumeControl.value = savedVolume;
+		   
+		   if (isPlaying) {
+		     audio.play().catch(() => { /* 处理自动播放阻止 */ });
+		     playPauseBtn.textContent = '⏸';
+		   }
+		 
+		   // 按钮点击事件
+		   playPauseBtn.addEventListener('click', function() {
+		     if (audio.paused) {
+		       audio.play();
+		       this.textContent = '⏸';
+		       localStorage.setItem('musicPlaying', 'true');
+		     } else {
+		       audio.pause();
+		       this.textContent = '▶';
+		       localStorage.setItem('musicPlaying', 'false');
+		     }
+		   });
+		 
+		   // 音量控制
+		   volumeControl.addEventListener('input', function(e) {
+		     audio.volume = e.target.value;
+		     localStorage.setItem('musicVolume', e.target.value);
+		   });
+		 
+		   // 监听页面跳转保持播放（需pjax支持）
+		   if (typeof pjax === 'object') {
+		     document.addEventListener('pjax:send', () => {
+		       audio.pause();
+		     });
+		     document.addEventListener('pjax:end', () => {
+		       if (localStorage.getItem('musicPlaying') === 'true') {
+		         audio.play();
+		       }
+		     });
+		   }
+		 });
+</script>
+		   
+		   
+		   
   </body>
 </html>
