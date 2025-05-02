@@ -432,66 +432,154 @@
 	       <script src="/js/particles-config.js"></script>
 		   
 		 
-		 
- <!-- 音乐播放器容器 -->
-<div id="music-player" style="position: fixed; bottom: 20px; right: 20px; z-index: 999; background: rgba(255,255,255,0.8); padding: 10px; border-radius: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-		   <audio id="bg-music" loop>
-		     <source src="/music/background.mp3" type="audio/mpeg">
-		   </audio>
-		   <button id="play-pause" style="margin-right:5px;">▶</button>
-		   <input type="range" id="volume" min="0" max="1" step="0.1" value="1" style="width: 80px;">
-		 </div>
-		 
-		 <script>
-		 // 使用localStorage保存播放状态
-		 document.addEventListener('DOMContentLoaded', function() {
-		   const audio = document.getElementById('bg-music');
-		   const playPauseBtn = document.getElementById('play-pause');
-		   const volumeControl = document.getElementById('volume');
-		 
-		   // 恢复播放状态
-		   const isPlaying = localStorage.getItem('musicPlaying') === 'true';
-		   const savedVolume = parseFloat(localStorage.getItem('musicVolume')) || 1;
-		   
-		   audio.volume = savedVolume;
-		   volumeControl.value = savedVolume;
-		   
-		   if (isPlaying) {
-		     audio.play().catch(() => { /* 处理自动播放阻止 */ });
-		     playPauseBtn.textContent = '⏸';
-		   }
-		 
-		   // 按钮点击事件
-		   playPauseBtn.addEventListener('click', function() {
-		     if (audio.paused) {
-		       audio.play();
-		       this.textContent = '⏸';
-		       localStorage.setItem('musicPlaying', 'true');
-		     } else {
-		       audio.pause();
-		       this.textContent = '▶';
-		       localStorage.setItem('musicPlaying', 'false');
-		     }
-		   });
-		 
-		   // 音量控制
-		   volumeControl.addEventListener('input', function(e) {
-		     audio.volume = e.target.value;
-		     localStorage.setItem('musicVolume', e.target.value);
-		   });
-		 
-		   // 监听页面跳转保持播放（需pjax支持）
-		   if (typeof pjax === 'object') {
-		     document.addEventListener('pjax:send', () => {
-		       audio.pause();
-		     });
-		     document.addEventListener('pjax:end', () => {
-		       if (localStorage.getItem('musicPlaying') === 'true') {
-		         audio.play();
-		       }
-		     });
-		   }
-		 });
+<!-- 音乐播放器 -->
+<style>
+  
+  #music-player {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 25px;
+    padding: 8px 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    border: 1px solid rgba(0, 0, 0, 0.05);
+    transform: translateY(0);
+    transition: all 0.3s ease;
+  }
+  
+  #music-player:hover {
+    background: rgba(255, 255, 255, 1);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  }
+  
+  .player-controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  #play-pause {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background 0.2s;
+  }
+  
+  #play-pause:hover {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  
+  #volume {
+    width: 70px;
+    cursor: pointer;
+    accent-color: #666; /* 滑块颜色 */
+  }
+  
+  #song-title {
+    font-size: 12px;
+    color: #555;
+    white-space: nowrap;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+</style>
+<div id="music-player">
+  <!-- 音乐播放器容器 -->
+  <div id="music-player">
+    <audio id="bg-music" loop crossorigin="anonymous">
+      <source src="/music/background.mp3" type="audio/mpeg">
+      Your browser does not support the audio element.
+    </audio>
+    <div class="player-controls">
+      <button id="play-pause" aria-label="播放/暂停">▶</button>
+      <span id="song-title">未加载</span>
+      <input type="range" id="volume" min="0" max="1" step="0.01" value="0.7">
+    </div>
+  </div>
+  
+  <script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const audio = document.getElementById('bg-music');
+    const playPauseBtn = document.getElementById('play-pause');
+    const volumeControl = document.getElementById('volume');
+    const songTitle = document.getElementById('song-title');
+  
+  
+    audio.volume = localStorage.getItem('musicVolume') || 0.7;
+    volumeControl.value = audio.volume;
+  
+
+    playPauseBtn.addEventListener('click', function() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          this.textContent = '⏸';
+          localStorage.setItem('musicPlaying', 'true');
+        }).catch(e => console.log('播放被阻止:', e));
+      } else {
+        audio.pause();
+        this.textContent = '▶';
+        localStorage.setItem('musicPlaying', 'false');
+      }
+    });
+  
+
+    volumeControl.addEventListener('input', (e) => {
+      audio.volume = e.target.value;
+      localStorage.setItem('musicVolume', e.target.value);
+    });
+  
+
+    document.addEventListener('click', function initPlay() {
+      if (localStorage.getItem('musicPlaying') === 'true') {
+        audio.play().then(() => {
+          playPauseBtn.textContent = '⏸';
+        }).catch(e => console.log('自动播放失败:', e));
+      }
+      document.removeEventListener('click', initPlay);
+    }, { once: true });
+  
+
+    songTitle.textContent = audio.querySelector('source').src.split('/').pop();
+  });
+  </script>
+</div>
+<script>
+ const songs = [
+   '/music/song1.mp3',
+   '/music/song2.mp3',
+   '/music/song3.mp3'
+ ];
+ let currentSong = 0;
+ 
+ function loadSong(index) {
+   audio.src = songs[index];
+   songTitle.textContent = `${index + 1}/${songs.length}`;
+ }
+ 
+ document.getElementById('next').addEventListener('click', () => {
+   currentSong = (currentSong + 1) % songs.length;
+   loadSong(currentSong);
+   if (!audio.paused) audio.play();
+ });
+ 
+ document.getElementById('prev').addEventListener('click', () => {
+   currentSong = (currentSong - 1 + songs.length) % songs.length;
+   loadSong(currentSong);
+   if (!audio.paused) audio.play();
+ });
+ 
+ loadSong(0);
 </script>
 		   
 		   
