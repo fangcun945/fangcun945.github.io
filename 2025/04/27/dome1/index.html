@@ -730,6 +730,28 @@
 	  initPlayer();
 	});
 	</script>	   
+		 
+		
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  new Pjax({
+    selectors: ["a[href]:not([target='_blank'])"], // 拦截所有非新窗口打开的链接
+    cacheBust: false,
+    switches: {
+      '#main-container': Pjax.switches.outerHTML // 替换你的内容容器选择器
+    }
+  });
+});
+</script>		
+		
+		 
+		 
 		   
   </body>
 </html>
