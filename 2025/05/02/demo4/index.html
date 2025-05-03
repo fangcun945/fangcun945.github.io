@@ -419,7 +419,6 @@
 		 
 		 
 	   
-<!-- 将此代码放在主题的layout文件</body>标签前 -->
 <style>
   /* 播放器容器 */
   #music-player {
@@ -431,16 +430,18 @@
     border-radius: 25px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     width: 280px;
     overflow: hidden;
+    transform-origin: top right;
   }
 
   /* 收纳状态 */
   #music-player.minimized {
+    transform: scale(0);
     width: 50px;
     height: 50px;
-    padding: 0;
+    opacity: 0.9;
   }
 
   /* 收纳按钮 */
@@ -460,6 +461,7 @@
     z-index: 10000;
     color: #666;
     transition: all 0.2s;
+    backdrop-filter: blur(5px);
   }
 
   #toggle-player:hover {
@@ -469,22 +471,34 @@
   /* 主内容区域 */
   .player-content {
     padding: 15px;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s 0.1s;
   }
 
   #music-player.minimized .player-content {
     opacity: 0;
     pointer-events: none;
+    transition-delay: 0s;
   }
 
   /* 下拉列表 */
   .song-list {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s ease;
+    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     margin-top: 10px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0,0,0,0.2) transparent;
+  }
+
+  .song-list::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .song-list::-webkit-scrollbar-thumb {
+    background: rgba(0,0,0,0.2);
+    border-radius: 2px;
   }
 
   .song-list.show {
@@ -589,7 +603,7 @@
   <div class="player-content">
     <audio id="audio-element"></audio>
     
-    <div class="song-info">
+    <div class="song-info" id="song-info">
       <div id="song-title">选择歌曲</div>
       <div class="time-display">
         <span id="current-time">0:00</span>
@@ -597,7 +611,6 @@
       </div>
     </div>
     
-    <!-- 下拉歌曲列表 -->
     <div class="song-list" id="song-list"></div>
     
     <div class="progress-container">
@@ -616,26 +629,24 @@
 <script>
 // 音乐列表配置
 const musicList = [
-		  { title: "辞·九门回忆", src: "/music/辞·九门回忆.mp3" },
-			{ title: "多幸运", src: "/music/多幸运.mp3" },
-			 { title: "莫问归期", src: "/music/莫问归期.mp3" },
-			 { title: "起风了", src: "/music/起风了.mp3" },
-			 { title: "一路生花", src: "/music/一路生花.mp3" }
-];  
+  { title: "辞·九门回忆", src: "/music/辞·九门回忆.mp3" },
+  { title: "多幸运", src: "/music/多幸运.mp3" },
+  { title: "莫问归期", src: "/music/莫问归期.mp3" },
+  { title: "起风了", src: "/music/起风了.mp3" },
+  { title: "一路生花", src: "/music/一路生花.mp3" }
+];
 
 // 播放器状态
 let currentTrack = 0;
 let isPlaying = false;
+let isListOpen = false;
 const audio = document.getElementById('audio-element');
 const player = document.getElementById('music-player');
 const songList = document.getElementById('song-list');
 
 // 初始化播放器
 function initPlayer() {
-  // 生成歌曲列表
   renderSongList();
-  
-  // 加载首首歌
   loadTrack(currentTrack);
   
   // 事件监听
@@ -647,6 +658,8 @@ function initPlayer() {
   document.getElementById('volume').addEventListener('input', setVolume);
   document.getElementById('toggle-player').addEventListener('click', togglePlayer);
   document.querySelector('.progress-container').addEventListener('click', seek);
+  document.getElementById('song-info').addEventListener('click', toggleSongList);
+  document.addEventListener('click', handleOutsideClick);
 }
 
 // 渲染歌曲列表
@@ -658,29 +671,45 @@ function renderSongList() {
     </div>
   `).join('');
 
-  // 添加点击事件
   document.querySelectorAll('.song-item').forEach(item => {
     item.addEventListener('click', () => {
       const index = parseInt(item.dataset.index);
       loadTrack(index);
       if (isPlaying) audio.play();
-      songList.classList.remove('show');
       updateActiveSong(index);
     });
   });
 }
 
-// 更新激活歌曲样式
+// 切换下拉列表
+function toggleSongList(e) {
+  e.stopPropagation();
+  isListOpen = !isListOpen;
+  songList.classList.toggle('show', isListOpen);
+}
+
+// 处理外部点击
+function handleOutsideClick(e) {
+  if (!player.contains(e.target)) {
+    songList.classList.remove('show');
+    isListOpen = false;
+  }
+}
+
+// 更新激活歌曲
 function updateActiveSong(index) {
+  currentTrack = index;
   document.querySelectorAll('.song-item').forEach(item => {
     const itemIndex = parseInt(item.dataset.index);
     item.classList.toggle('active', itemIndex === index);
   });
 }
 
-// 切换播放器收纳状态
+// 切换收纳状态
 function togglePlayer() {
   player.classList.toggle('minimized');
+  songList.classList.remove('show');
+  isListOpen = false;
 }
 
 // 加载歌曲
@@ -692,9 +721,12 @@ function loadTrack(index) {
   audio.addEventListener('loadedmetadata', () => {
     document.getElementById('duration').textContent = formatTime(audio.duration);
   });
+  
+  songList.classList.remove('show');
+  isListOpen = false;
 }
 
-// 播放/暂停控制
+// 播放控制
 function togglePlay() {
   if (audio.paused) {
     audio.play();
@@ -714,7 +746,7 @@ function updateProgress() {
   document.getElementById('current-time').textContent = formatTime(audio.currentTime);
 }
 
-// 跳转播放进度
+// 跳转播放
 function seek(e) {
   const rect = e.target.getBoundingClientRect();
   const pos = (e.clientX - rect.left) / rect.width;
@@ -727,18 +759,15 @@ function setVolume(e) {
   localStorage.setItem('musicVolume', e.target.value);
 }
 
-// 播放下一首
+// 切换歌曲
 function playNext() {
   loadTrack(currentTrack + 1);
   if (isPlaying) audio.play();
-  renderSongList();
 }
 
-// 播放上一首
 function playPrevious() {
   loadTrack(currentTrack - 1);
   if (isPlaying) audio.play();
-  renderSongList();
 }
 
 // 时间格式化
@@ -750,8 +779,7 @@ function formatTime(seconds) {
 
 // 初始化
 document.addEventListener('DOMContentLoaded', initPlayer);
-</script>		
-
+</script>
 
 
 
