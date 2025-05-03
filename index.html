@@ -454,15 +454,14 @@
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     width: 280px;
     overflow: hidden;
-    transform-origin: top right;
   }
 
   /* 收纳状态 */
   #music-player.minimized {
-    transform: scale(0);
     width: 50px;
     height: 50px;
-    opacity: 0.9;
+    border-radius: 50%;
+    overflow: visible;
   }
 
   /* 收纳按钮 */
@@ -481,12 +480,15 @@
     justify-content: center;
     z-index: 10000;
     color: #666;
-    transition: all 0.2s;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     backdrop-filter: blur(5px);
   }
 
-  #toggle-player:hover {
-    background: rgba(0, 0, 0, 0.05);
+  #music-player.minimized #toggle-player {
+    top: 50%;
+    left: 50%;
+    right: auto;
+    transform: translate(-50%, -50%);
   }
 
   /* 主内容区域 */
@@ -501,6 +503,7 @@
     transition-delay: 0s;
   }
 
+  /* 其他原有样式保持不变... */
   /* 下拉列表 */
   .song-list {
     max-height: 0;
@@ -801,6 +804,9 @@ function formatTime(seconds) {
 // 初始化
 document.addEventListener('DOMContentLoaded', initPlayer);
 </script>
+
+
+
 
 
 
