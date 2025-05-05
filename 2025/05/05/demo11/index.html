@@ -26,8 +26,8 @@
   
   <title>
     
-      Tag 
-       : 工作
+      demo11 
+      
       
     
   </title>
@@ -48,6 +48,10 @@
 
 
   
+
+  
+    
+<link rel="stylesheet" href="/css/post.css">
 
   
 
@@ -91,189 +95,40 @@
 
 
       <div class="main">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2025</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="demo15">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo15/">
-            
-              <span>demo15</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo14">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo14/">
-            
-              <span>demo14</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo13">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo13/">
-            
-              <span>demo13</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo12">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo12/">
-            
-              <span>demo12</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo11">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo11/">
-            
-              <span>demo11</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo10">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo10/">
-            
-              <span>demo10</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo9">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo9/">
-            
-              <span>demo9</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo8">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo8/">
-            
-              <span>demo8</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo7">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo7/">
-            
-              <span>demo7</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="demo6">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo6/">
-            
-              <span>demo6</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="傍晚记录日记">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo5/">
-            
-              <span>傍晚记录日记</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="小总结·短期复盘">
-        <div class="time-m-d">05-02</div>
-        <div class="title">
-          <a href="/2025/05/02/demo4/">
-            
-              <span>小总结·短期复盘</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="记录·四月二十九日">
-        <div class="time-m-d">04-29</div>
-        <div class="title">
-          <a href="/2025/04/29/demo3/">
-            
-              <span>记录·四月二十九日</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="记录·四月二十八日">
-        <div class="time-m-d">04-28</div>
-        <div class="title">
-          <a href="/2025/04/28/demo2/">
-            
-              <span>记录·四月二十八日</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="暮色笔记·四月廿七">
-        <div class="time-m-d">04-27</div>
-        <div class="title">
-          <a href="/2025/04/27/dome1/">
-            
-              <span>暮色笔记·四月廿七</span>
-            
-          </a>
-        </div>
-      </div>
+<div class="post">
+  <h3 class="date">
+    May 05, 2025
+  </h3>
+  <h1>
+    demo11
+  </h1>
+  <div class="content markdown-body">
     
   </div>
+  
+    
+      <a id="older" class="blog-nav" href="/2025/05/05/demo10/">OLDER&nbsp;&gt;</a>
+      
+        
+          <a id="newer" class="blog-nav" href="/2025/05/05/demo12/">&lt;&nbsp;NEWER</a>
+          
+            
 </div>
-
         <div class="footer">
   
     <div class="footer-more">
