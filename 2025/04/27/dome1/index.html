@@ -450,28 +450,24 @@
       width: 50px;
       height: 50px;
       border-radius: 50%;
-      overflow: visible;
+    }
+
+    #music-player.expanded {
+      width: 280px;
+      height: auto;
+      border-radius: 25px;
     }
 
     .player-content {
       opacity: 0;
       pointer-events: none;
-      transition-delay: 0s;
+      transition: opacity 0.3s 0.15s, transform 0.4s;
     }
 
-    #toggle-player {
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+    #music-player.expanded .player-content {
+      opacity: 1;
+      pointer-events: auto;
     }
-  }
-
-  /* 收纳状态 */
-  #music-player.minimized {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    overflow: visible;
   }
 
   /* 收纳按钮 */
@@ -495,8 +491,19 @@
     transform: translateZ(0);
   }
 
-  #toggle-player:hover {
-    transform: scale(1.1);
+  @media (max-width: 768px) {
+    #toggle-player {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    #music-player.expanded #toggle-player {
+      top: 10px;
+      left: auto;
+      right: 10px;
+      transform: none;
+    }
   }
 
   /* 主内容区域 */
@@ -506,13 +513,6 @@
     transition: opacity 0.3s 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
                transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transform: scale(1);
-  }
-
-  #music-player.minimized .player-content {
-    opacity: 0;
-    pointer-events: none;
-    transform: scale(0.9);
-    transition-delay: 0s;
   }
 
   /* 歌曲列表 */
@@ -670,9 +670,11 @@ function initPlayer() {
   renderSongList();
   loadTrack(currentTrack);
   
-  // 桌面端自动展开
+  // 初始化设备状态
   if (window.innerWidth > 768) {
-    player.classList.remove('minimized');
+    player.classList.add('expanded');
+  } else {
+    player.classList.remove('expanded');
   }
 
   audio.addEventListener('timeupdate', updateProgress);
@@ -727,9 +729,13 @@ function updateActiveSong(index) {
 }
 
 function togglePlayer() {
-  if (window.innerWidth > 768) {
-    player.classList.toggle('minimized');
+  player.classList.toggle('expanded');
+  
+  // 移动端展开时自动滚动到可视区域
+  if (player.classList.contains('expanded') && window.innerWidth <= 768) {
+    player.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
+  
   songList.classList.remove('show');
   isListOpen = false;
 }
@@ -794,16 +800,18 @@ function formatTime(seconds) {
 
 // 窗口大小变化监听
 window.addEventListener('resize', () => {
-  if (window.innerWidth > 768 && player.classList.contains('minimized')) {
-    player.classList.remove('minimized');
-  } else if (window.innerWidth <= 768 && !player.classList.contains('minimized')) {
-    player.classList.add('minimized');
+  if (window.innerWidth > 768) {
+    player.classList.add('expanded');
+  } else {
+    // 保留移动端用户手动切换的状态
+    if (!player.classList.contains('expanded')) {
+      player.classList.remove('expanded');
+    }
   }
 });
 
 document.addEventListener('DOMContentLoaded', initPlayer);
 </script>
-
 
 
 
