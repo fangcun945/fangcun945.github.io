@@ -431,7 +431,14 @@
     transform: translateZ(0);
   }
 
-  /* 移动端默认收纳 */
+  /* 收纳状态 */
+  #music-player.minimized {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+  }
+
+  /* 移动端默认样式 */
   @media (max-width: 768px) {
     #music-player {
       width: 50px;
@@ -439,29 +446,16 @@
       border-radius: 50%;
     }
 
-    #music-player.expanded {
+    #music-player:not(.minimized) {
       width: 280px;
       height: auto;
       border-radius: 25px;
     }
-
-    .player-content {
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s 0.15s, transform 0.4s;
-    }
-
-    #music-player.expanded .player-content {
-      opacity: 1;
-      pointer-events: auto;
-    }
   }
 
-  /* 收纳按钮 */
+  /* 控制按钮 */
   #toggle-player {
     position: absolute;
-    top: 10px;
-    right: 10px;
     background: rgba(255, 255, 255, 0.9);
     border: none;
     cursor: pointer;
@@ -478,6 +472,20 @@
     transform: translateZ(0);
   }
 
+  /* 桌面端按钮定位 */
+  @media (min-width: 769px) {
+    #toggle-player {
+      top: 10px;
+      right: 10px;
+    }
+
+    #music-player.minimized {
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  /* 移动端按钮定位 */
   @media (max-width: 768px) {
     #toggle-player {
       top: 50%;
@@ -485,7 +493,7 @@
       transform: translate(-50%, -50%);
     }
 
-    #music-player.expanded #toggle-player {
+    #music-player:not(.minimized) #toggle-player {
       top: 10px;
       left: auto;
       right: 10px;
@@ -497,9 +505,12 @@
   .player-content {
     padding: 15px;
     opacity: 1;
-    transition: opacity 0.3s 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-               transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    transform: scale(1);
+    transition: opacity 0.3s 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  #music-player.minimized .player-content {
+    opacity: 0;
+    pointer-events: none;
   }
 
   /* 歌曲列表 */
@@ -659,9 +670,9 @@ function initPlayer() {
   
   // 初始化设备状态
   if (window.innerWidth > 768) {
-    player.classList.add('expanded');
+    player.classList.remove('minimized');
   } else {
-    player.classList.remove('expanded');
+    player.classList.add('minimized');
   }
 
   audio.addEventListener('timeupdate', updateProgress);
@@ -716,15 +727,13 @@ function updateActiveSong(index) {
 }
 
 function togglePlayer() {
-  player.classList.toggle('expanded');
+  const isMobile = window.innerWidth <= 768;
+  player.classList.toggle('minimized');
   
-  // 移动端展开时自动滚动到可视区域
-  if (player.classList.contains('expanded') && window.innerWidth <= 768) {
+  // 移动端展开时自动滚动
+  if (!player.classList.contains('minimized') && isMobile) {
     player.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   }
-  
-  songList.classList.remove('show');
-  isListOpen = false;
 }
 
 function loadTrack(index) {
@@ -787,19 +796,21 @@ function formatTime(seconds) {
 
 // 窗口大小变化监听
 window.addEventListener('resize', () => {
-  if (window.innerWidth > 768) {
-    player.classList.add('expanded');
-  } else {
-    // 保留移动端用户手动切换的状态
-    if (!player.classList.contains('expanded')) {
-      player.classList.remove('expanded');
+  const isMobile = window.innerWidth <= 768;
+  const wasMobile = player.dataset.wasMobile === 'true';
+  
+  if (isMobile !== wasMobile) {
+    if (isMobile) {
+      player.classList.add('minimized');
+    } else {
+      player.classList.remove('minimized');
     }
   }
+  player.dataset.wasMobile = isMobile;
 });
 
 document.addEventListener('DOMContentLoaded', initPlayer);
 </script>
-
 
 
 
