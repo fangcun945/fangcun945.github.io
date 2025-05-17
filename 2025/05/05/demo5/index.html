@@ -429,9 +429,32 @@
     border-radius: 25px;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     width: 280px;
     overflow: hidden;
+    transform: translateZ(0);
+  }
+
+  /* 移动端默认收纳 */
+  @media (max-width: 768px) {
+    #music-player {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      overflow: visible;
+    }
+
+    .player-content {
+      opacity: 0;
+      pointer-events: none;
+      transition-delay: 0s;
+    }
+
+    #toggle-player {
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
   }
 
   /* 收纳状态 */
@@ -447,64 +470,59 @@
     position: absolute;
     top: 10px;
     right: 10px;
-    background: none;
+    background: rgba(255, 255, 255, 0.9);
     border: none;
     cursor: pointer;
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10000;
     color: #666;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    backdrop-filter: blur(5px);
+    transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    transform: translateZ(0);
   }
 
-  #music-player.minimized #toggle-player {
-    top: 50%;
-    left: 50%;
-    right: auto;
-    transform: translate(-50%, -50%);
+  #toggle-player:hover {
+    transform: scale(1.1);
   }
 
   /* 主内容区域 */
   .player-content {
     padding: 15px;
-    transition: opacity 0.3s 0.1s;
+    opacity: 1;
+    transition: opacity 0.3s 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+               transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform: scale(1);
   }
 
   #music-player.minimized .player-content {
     opacity: 0;
     pointer-events: none;
+    transform: scale(0.9);
     transition-delay: 0s;
   }
 
-  /* 其他原有样式保持不变... */
-  /* 下拉列表 */
+  /* 歌曲列表 */
   .song-list {
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                opacity 0.3s ease;
     margin-top: 10px;
     background: rgba(255, 255, 255, 0.9);
     border-radius: 12px;
+    opacity: 0;
     scrollbar-width: thin;
     scrollbar-color: rgba(0,0,0,0.2) transparent;
   }
 
-  .song-list::-webkit-scrollbar {
-    width: 4px;
-  }
-
-  .song-list::-webkit-scrollbar-thumb {
-    background: rgba(0,0,0,0.2);
-    border-radius: 2px;
-  }
-
   .song-list.show {
     max-height: 200px;
+    opacity: 1;
     overflow-y: auto;
   }
 
@@ -548,7 +566,7 @@
     background: #4a90e2;
     border-radius: 2px;
     width: 0%;
-    transition: width 0.1s linear;
+    transition: width 0.1s linear, background 0.3s ease;
   }
 
   /* 控制按钮 */
@@ -569,12 +587,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.2s;
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     color: #555;
+    transform: translateZ(0);
   }
 
   .control-btn:hover {
-    background: rgba(0, 0, 0, 0.05);
+    transform: scale(1.15);
   }
 
   /* 时间显示 */
@@ -586,17 +605,11 @@
     margin-top: 5px;
   }
 
-  /* 移动端适配 */
-  @media (max-width: 768px) {
-    #music-player {
-      width: 260px;
-      right: 10px;
-    }
-    
-    .song-item {
-      padding: 8px 12px;
-      font-size: 12px;
-    }
+  /* 音量控制 */
+  #volume {
+    width: 80px;
+    height: 4px;
+    accent-color: #4a90e2;
   }
 </style>
 
@@ -629,7 +642,6 @@
 </div>
 
 <script>
-// 音乐列表配置
 const musicList = [
   { title: "辞·九门回忆", src: "/music/辞·九门回忆.mp3" },
   { title: "多幸运", src: "/music/多幸运.mp3" },
@@ -638,7 +650,6 @@ const musicList = [
   { title: "一路生花", src: "/music/一路生花.mp3" }
 ];
 
-// 播放器状态
 let currentTrack = 0;
 let isPlaying = false;
 let isListOpen = false;
@@ -646,12 +657,15 @@ const audio = document.getElementById('audio-element');
 const player = document.getElementById('music-player');
 const songList = document.getElementById('song-list');
 
-// 初始化播放器
 function initPlayer() {
   renderSongList();
   loadTrack(currentTrack);
   
-  // 事件监听
+  // 桌面端自动展开
+  if (window.innerWidth > 768) {
+    player.classList.remove('minimized');
+  }
+
   audio.addEventListener('timeupdate', updateProgress);
   audio.addEventListener('ended', playNext);
   document.getElementById('prev-btn').addEventListener('click', playPrevious);
@@ -664,7 +678,6 @@ function initPlayer() {
   document.addEventListener('click', handleOutsideClick);
 }
 
-// 渲染歌曲列表
 function renderSongList() {
   songList.innerHTML = musicList.map((song, index) => `
     <div class="song-item ${index === currentTrack ? 'active' : ''}" 
@@ -683,14 +696,12 @@ function renderSongList() {
   });
 }
 
-// 切换下拉列表
 function toggleSongList(e) {
   e.stopPropagation();
   isListOpen = !isListOpen;
   songList.classList.toggle('show', isListOpen);
 }
 
-// 处理外部点击
 function handleOutsideClick(e) {
   if (!player.contains(e.target)) {
     songList.classList.remove('show');
@@ -698,7 +709,6 @@ function handleOutsideClick(e) {
   }
 }
 
-// 更新激活歌曲
 function updateActiveSong(index) {
   currentTrack = index;
   document.querySelectorAll('.song-item').forEach(item => {
@@ -707,14 +717,14 @@ function updateActiveSong(index) {
   });
 }
 
-// 切换收纳状态
 function togglePlayer() {
-  player.classList.toggle('minimized');
+  if (window.innerWidth > 768) {
+    player.classList.toggle('minimized');
+  }
   songList.classList.remove('show');
   isListOpen = false;
 }
 
-// 加载歌曲
 function loadTrack(index) {
   currentTrack = (index + musicList.length) % musicList.length;
   audio.src = musicList[currentTrack].src;
@@ -728,7 +738,6 @@ function loadTrack(index) {
   isListOpen = false;
 }
 
-// 播放控制
 function togglePlay() {
   if (audio.paused) {
     audio.play();
@@ -741,27 +750,23 @@ function togglePlay() {
   }
 }
 
-// 更新进度条
 function updateProgress() {
   const progress = (audio.currentTime / audio.duration) * 100;
   document.getElementById('progress-bar').style.width = `${progress}%`;
   document.getElementById('current-time').textContent = formatTime(audio.currentTime);
 }
 
-// 跳转播放
 function seek(e) {
   const rect = e.target.getBoundingClientRect();
   const pos = (e.clientX - rect.left) / rect.width;
   audio.currentTime = pos * audio.duration;
 }
 
-// 设置音量
 function setVolume(e) {
   audio.volume = e.target.value;
   localStorage.setItem('musicVolume', e.target.value);
 }
 
-// 切换歌曲
 function playNext() {
   loadTrack(currentTrack + 1);
   if (isPlaying) audio.play();
@@ -772,14 +777,21 @@ function playPrevious() {
   if (isPlaying) audio.play();
 }
 
-// 时间格式化
 function formatTime(seconds) {
   const minutes = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
   return `${minutes}:${secs.toString().padStart(2, '0')}`;
 }
 
-// 初始化
+// 窗口大小变化监听
+window.addEventListener('resize', () => {
+  if (window.innerWidth > 768 && player.classList.contains('minimized')) {
+    player.classList.remove('minimized');
+  } else if (window.innerWidth <= 768 && !player.classList.contains('minimized')) {
+    player.classList.add('minimized');
+  }
+});
+
 document.addEventListener('DOMContentLoaded', initPlayer);
 </script>
 
