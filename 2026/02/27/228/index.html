@@ -26,7 +26,7 @@
   
   <title>
     
-      archive_a: 2025/11 
+      年后小结 
       
       
     
@@ -48,6 +48,10 @@
 
 
   
+
+  
+    
+<link rel="stylesheet" href="/css/post.css">
 
   
 
@@ -91,361 +95,39 @@
 
 
       <div class="main">
-        <!-- 归档页，展示本站所有文章，按照年份降序归类，url形式：https://yoursite/archives/ -->
+        <!-- 文章详情页，展示文章具体内容，url形式：https://yoursite/文章标题/ -->
+<!-- 同时为「标签tag」，「朋友friend」，「分类categories」，「关于about」页面的承载页面，具体展示取决于page.type -->
 
-<!-- last: 按年份把文章分组，当前遍历到的年份 -->
-<!-- now: 当前遍历到的文章的发布年份 -->
+<!-- LaTex Display -->
+<script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+<script type="text/javascript" id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+</script>
+<script>
+  MathJax = {
+    tex: {
+      inlineMath: [['$', '$'], ['\\(', '\\)']]
+    }
+  };
+</script>
 
-<div class="container archives">
-  <div class="post-list">
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2026</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="年后小结">
-        <div class="time-m-d">02-27</div>
-        <div class="title">
-          <a href="/2026/02/27/228/">
-            
-              <span>年后小结</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="心情低落">
-        <div class="time-m-d">02-20</div>
-        <div class="title">
-          <a href="/2026/02/20/227/">
-            
-              <span>心情低落</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="除夕年夜饭前">
-        <div class="time-m-d">02-16</div>
-        <div class="title">
-          <a href="/2026/02/16/chuxi/">
-            
-              <span>除夕年夜饭前</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="节点篇">
-        <div class="time-m-d">02-10</div>
-        <div class="title">
-          <a href="/2026/02/10/demo27/">
-            
-              <span>节点篇</span>
-            
-          </a>
-        </div>
-      </div>
-    
-        <!-- 后续文章的发布年份呈现 -->
-        <div class="content-title">
-          <h2>
-            <span>2025</span>
-          </h2>
-        </div>
-      
-      <div class="post-item" title="近况">
-        <div class="time-m-d">11-11</div>
-        <div class="title">
-          <a href="/2025/11/11/demo26/">
-            
-              <span>近况</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="小完结，未来大圆满">
-        <div class="time-m-d">10-07</div>
-        <div class="title">
-          <a href="/2025/10/07/demo25/">
-            
-              <span>小完结，未来大圆满</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="若事与愿违，坚持是否仍有意义">
-        <div class="time-m-d">09-28</div>
-        <div class="title">
-          <a href="/2025/09/28/demo24/">
-            
-              <span>若事与愿违，坚持是否仍有意义</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="决定">
-        <div class="time-m-d">09-03</div>
-        <div class="title">
-          <a href="/2025/09/03/demo23/">
-            
-              <span>决定</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="八月前最后的记录">
-        <div class="time-m-d">08-31</div>
-        <div class="title">
-          <a href="/2025/08/31/demo22/">
-            
-              <span>八月前最后的记录</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="昏头了">
-        <div class="time-m-d">08-31</div>
-        <div class="title">
-          <a href="/2025/08/31/demo21/">
-            
-              <span>昏头了</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="简单的计划">
-        <div class="time-m-d">08-17</div>
-        <div class="title">
-          <a href="/2025/08/17/demo20/">
-            
-              <span>简单的计划</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="平静的生活">
-        <div class="time-m-d">07-22</div>
-        <div class="title">
-          <a href="/2025/07/22/demo19/">
-            
-              <span>平静的生活</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="新的思考">
-        <div class="time-m-d">07-21</div>
-        <div class="title">
-          <a href="/2025/07/21/demo18/">
-            
-              <span>新的思考</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="重复又开始">
-        <div class="time-m-d">06-25</div>
-        <div class="title">
-          <a href="/2025/06/25/demo17/">
-            
-              <span>重复又开始</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="有点想通了">
-        <div class="time-m-d">06-12</div>
-        <div class="title">
-          <a href="/2025/06/12/demo16/">
-            
-              <span>有点想通了</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="沉默了">
-        <div class="time-m-d">06-11</div>
-        <div class="title">
-          <a href="/2025/06/11/demo15/">
-            
-              <span>沉默了</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="嘻嘻嘻嘻嘻">
-        <div class="time-m-d">06-08</div>
-        <div class="title">
-          <a href="/2025/06/08/demo14/">
-            
-              <span>嘻嘻嘻嘻嘻</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="想法终于说出来了">
-        <div class="time-m-d">06-08</div>
-        <div class="title">
-          <a href="/2025/06/08/demo13/">
-            
-              <span>想法终于说出来了</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="今晚和朋友聚餐后的想法">
-        <div class="time-m-d">06-07</div>
-        <div class="title">
-          <a href="/2025/06/07/demo12/">
-            
-              <span>今晚和朋友聚餐后的想法</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="新的开篇">
-        <div class="time-m-d">06-04</div>
-        <div class="title">
-          <a href="/2025/06/04/demo11/">
-            
-              <span>新的开篇</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="累">
-        <div class="time-m-d">05-21</div>
-        <div class="title">
-          <a href="/2025/05/21/demo10/">
-            
-              <span>累</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="情绪空洞">
-        <div class="time-m-d">05-20</div>
-        <div class="title">
-          <a href="/2025/05/20/demo9/">
-            
-              <span>情绪空洞</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="心情低落">
-        <div class="time-m-d">05-17</div>
-        <div class="title">
-          <a href="/2025/05/17/demo8/">
-            
-              <span>心情低落</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="积累想法">
-        <div class="time-m-d">05-14</div>
-        <div class="title">
-          <a href="/2025/05/14/demo7/">
-            
-              <span>积累想法</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="梦镜记录">
-        <div class="time-m-d">05-08</div>
-        <div class="title">
-          <a href="/2025/05/08/demo6/">
-            
-              <span>梦镜记录</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="傍晚记录日记">
-        <div class="time-m-d">05-05</div>
-        <div class="title">
-          <a href="/2025/05/05/demo5/">
-            
-              <span>傍晚记录日记</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="小总结·短期复盘">
-        <div class="time-m-d">05-02</div>
-        <div class="title">
-          <a href="/2025/05/02/demo4/">
-            
-              <span>小总结·短期复盘</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="记录·四月二十九日">
-        <div class="time-m-d">04-29</div>
-        <div class="title">
-          <a href="/2025/04/29/demo3/">
-            
-              <span>记录·四月二十九日</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="记录·四月二十八日">
-        <div class="time-m-d">04-28</div>
-        <div class="title">
-          <a href="/2025/04/28/demo2/">
-            
-              <span>记录·四月二十八日</span>
-            
-          </a>
-        </div>
-      </div>
-    
-      <div class="post-item" title="暮色笔记·四月廿七">
-        <div class="time-m-d">04-27</div>
-        <div class="title">
-          <a href="/2025/04/27/dome1/">
-            
-              <span>暮色笔记·四月廿七</span>
-            
-          </a>
-        </div>
-      </div>
-    
+<div class="post">
+  <h3 class="date">
+    Feb 27, 2026
+  </h3>
+  <h1>
+    年后小结
+  </h1>
+  <div class="content markdown-body">
+    <p>现在是晚上的十点整，说一下现在的情况吧，我还是以我自己为中心点，以自己的想法为主，相亲的第一个现在还在接触，挺喜欢的，聊天也是正常接触，其他女生我都没回消息，明天又要接触一个女生，希望对方不要看上我，然后上一条文章说的是心情低落，后面问清楚后其实也没什么，只是女方她母亲比较着急，我觉得还是慢慢发展，人生大事要慎重选择</p>
+
   </div>
+  
+    
+      <a id="older" class="blog-nav" href="/2026/02/20/227/">OLDER&nbsp;&gt;</a>
+      
+        
+            
 </div>
-
         <div class="footer">
   
     <div class="footer-more">
